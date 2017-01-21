@@ -11,11 +11,11 @@ if (!is_null($events['events'])) {
 		// Reply only when message sent is in 'text' format
 		if ($event['type'] == 'message' && $event['message']['type'] == 'text') {
 			// Get text sent
-			$text = /*$event['message']['text']+" : "+*/"สวัสดีคุณ ".$event['source']['groupId'];
+			$text = $event['message']['text'];
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 			// Get user
-			$user = $event['source']['text'];
+			$user = $event['source']['type'];
 			// Build message to reply back
 			$messages = [
 				'type' => 'text',
