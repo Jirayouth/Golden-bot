@@ -16,7 +16,13 @@ if (!is_null($events['events'])) {
 			$replyToken = $event['replyToken'];
 			// Get user
 			$user = $event['source']['type'];
-			$uid = $event['source']['userID'];
+			if($user=='user'){
+				$uid = $event['source']['userId'];
+			}else if($user=='group'){
+				$uid = $event['source']['groupId'];
+			}else {
+				$uid = $event['source']['roomId'];
+			}
 			
 			// Build message to reply back
 			$messages = [
