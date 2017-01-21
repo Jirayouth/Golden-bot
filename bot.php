@@ -42,8 +42,6 @@ if (!is_null($events['events'])) {
 			$myfile = fopen("nm_list.txt", "w") or die("Unable to open file!");
 			$txt = $user+" : "+$replyToken+"\n";
 			fwrite($myfile, $txt);
-			$txt = "Minnie Mouse\n";
-			fwrite($myfile, $txt);
 			fclose($myfile);
 		}
 	}
