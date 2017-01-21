@@ -43,7 +43,7 @@ if (!is_null($events['events'])) {
 			
 			// PUSH Make a POST Request to Messaging API to reply to sender
 			$url = 'https://api.line.me/v2/bot/message/push';
-			$send_message = $user." ".$userID." : ".$text;
+			$send_message = $user." ".$uid." : ".$text;
 			$messages_push = [
 				'type' => 'text',
 				'text' => $send_message
