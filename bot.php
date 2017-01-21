@@ -15,7 +15,9 @@ if (!is_null($events['events'])) {
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 			// Get user
-			$user = $event['source']['type'];
+			//$user = $event['source']['type'];
+			//$uid = $event['source']['userID'];
+			
 			// Build message to reply back
 			$messages = [
 				'type' => 'text',
@@ -26,6 +28,29 @@ if (!is_null($events['events'])) {
 			$data = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
+			];
+			$post = json_encode($data);
+			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+			$result = curl_exec($ch);
+			curl_close($ch);
+			echo $result . "\r\n";
+			
+			// PUSH Make a POST Request to Messaging API to reply to sender
+			$url = 'https://api.line.me/v2/bot/message/push';
+			$send_message = "วันนี้อากาศดี";
+			$messages_push = [
+				'type' => 'text',
+				'text' => $send_message
+			];
+			$data = [
+				'to' => "C7b6f92fef09462cb0942c24b33820ceb",
+				'messages' => [$messages_push],
 			];
 			$post = json_encode($data);
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
