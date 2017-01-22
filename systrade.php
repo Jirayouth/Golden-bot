@@ -1,29 +1,26 @@
 <?php
-$access_token = 'qtfW2whmIBLG4ui5DO1+wIB2vxRW8dUX7t6ksc4ZtYnL6Y/4ZDShhwB0fk03JUkdyStOJ183vPL4oRD9ZEfuHT0eQ4jVw6oBt8+QxNnh4YzFxgSSWoFU+t9JYRBOXk2cwHW0YtzJsQVKVxpOGVhCCgdB04t89/1O/w1cDnyilFU=';
+if( $_GET["name"] & $_GET["signal"] & $_GET["price"]) {
+	$name = $_GET['name'];
+	$signal = $_GET['signal'];
+	$price = $_GET['price'];
+
+
+	$access_token = 'qtfW2whmIBLG4ui5DO1+wIB2vxRW8dUX7t6ksc4ZtYnL6Y/4ZDShhwB0fk03JUkdyStOJ183vPL4oRD9ZEfuHT0eQ4jVw6oBt8+QxNnh4YzFxgSSWoFU+t9JYRBOXk2cwHW0YtzJsQVKVxpOGVhCCgdB04t89/1O/w1cDnyilFU=';
 // Get POST body content
-$content = file_get_contents('php://input');
+//$content = file_get_contents('php://input');
 // Parse JSON
-$events = json_decode($content, true);
-// Validate parsed JSON data
-if (!is_null($events['events'])) {
-	// Loop through each event
-	foreach ($events['events'] as $event) {
-		// Reply only when message sent is in 'text' format
-		if ($event['type'] == 'message' && $event['message']['type'] == 'text') {
-			// Get text sent
-			$text = $event['message']['text'];
-			// Get replyToken
-			$replyToken = $event['replyToken'];
-			// Build message to reply back
-			$messages = [
+
+			
+			// PUSH Make a POST Request to Messaging API to reply to sender
+			$url = 'https://api.line.me/v2/bot/message/push';
+			$send_message = $signal." ".$name." : ".$price;
+			$messages_push = [
 				'type' => 'text',
-				'text' => $text
+				'text' => $send_message
 			];
-			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://api.line.me/v2/bot/message/reply';
 			$data = [
-				'replyToken' => $replyToken,
-				'messages' => [$messages],
+				'to' => "C7b6f92fef09462cb0942c24b33820ceb",
+				'messages' => [$messages_push],
 			];
 			$post = json_encode($data);
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
@@ -36,7 +33,5 @@ if (!is_null($events['events'])) {
 			$result = curl_exec($ch);
 			curl_close($ch);
 			echo $result . "\r\n";
-		}
-	}
 }
 echo "OK";
